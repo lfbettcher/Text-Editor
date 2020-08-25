@@ -6,16 +6,18 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.security.Key;
 import java.util.ArrayList;
 
 public class TextEditor extends JFrame {
 
-    final int WIDTH = 640;
-    final int HEIGHT = 400;
+    final int WIDTH = 600;
+    final int HEIGHT = 500;
     final int ICON_SIZE = 32;
 
     final String OPEN_ICON = "icons/open_256.png";
@@ -123,16 +125,19 @@ public class TextEditor extends JFrame {
         JMenuItem openMenuItem = new JMenuItem("Open");
         openMenuItem.setName("MenuOpen");
         openMenuItem.addActionListener(event -> openFile());
+        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 
         // Save
         JMenuItem saveMenuItem = new JMenuItem("Save");
         saveMenuItem.setName("MenuSave");
         saveMenuItem.addActionListener(event -> saveFile());
+        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
         // Exit
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.setName("MenuExit");
         exitMenuItem.addActionListener(event -> dispose()); // System.exit(0));
+        exitMenuItem.setMnemonic(KeyEvent.VK_Q);
 
         fileMenu.add(openMenuItem);
         fileMenu.add(saveMenuItem);
@@ -152,9 +157,9 @@ public class TextEditor extends JFrame {
         startSearchMenuItem.addActionListener(startSearchAction);
 
         // Previous Match
-        JMenuItem previousMatchMenuItem = new JMenuItem("Find Previous");
-        previousMatchMenuItem.setName("MenuPreviousMatch");
-        previousMatchMenuItem.addActionListener(prevMatchAction);
+        JMenuItem prevMatchMenuItem = new JMenuItem("Find Previous");
+        prevMatchMenuItem.setName("MenuPreviousMatch");
+        prevMatchMenuItem.addActionListener(prevMatchAction);
 
         // Next Match
         JMenuItem nextMatchMenuItem = new JMenuItem("Find Next");
@@ -167,7 +172,7 @@ public class TextEditor extends JFrame {
         useRegExMenuItem.addActionListener(regExCheckboxAction);
 
         searchMenu.add(startSearchMenuItem);
-        searchMenu.add(previousMatchMenuItem);
+        searchMenu.add(prevMatchMenuItem);
         searchMenu.add(nextMatchMenuItem);
         searchMenu.addSeparator();
         searchMenu.add(useRegExMenuItem);
