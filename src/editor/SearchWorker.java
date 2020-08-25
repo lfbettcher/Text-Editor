@@ -40,7 +40,6 @@ public class SearchWorker extends SwingWorker<String, Object> {
     }
 
     private void searchRegEx() {
-        this.matchIndexes = new ArrayList<>();
         Pattern pattern = Pattern.compile(this.searchText);
         Matcher matcher = pattern.matcher(this.text);
         while (matcher.find()) {

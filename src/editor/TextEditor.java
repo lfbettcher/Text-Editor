@@ -18,12 +18,11 @@ public class TextEditor extends JFrame {
     final int HEIGHT = 400;
     final int ICON_SIZE = 32;
 
-    final String PATH = "Text Editor/task/src/editor/";
-    final String OPEN_ICON = PATH + "icons/open_256.png";
-    final String SAVE_ICON = PATH + "icons/save_256.png";
-    final String SEARCH_ICON = PATH + "icons/search_256.png";
-    final String PREV_ICON = PATH + "icons/left-arrow_256.png";
-    final String NEXT_ICON = PATH + "icons/right-arrow_256.png";
+    final String OPEN_ICON = "icons/open_256.png";
+    final String SAVE_ICON = "icons/save_256.png";
+    final String SEARCH_ICON = "icons/search_256.png";
+    final String PREV_ICON = "icons/left-arrow_256.png";
+    final String NEXT_ICON = "icons/right-arrow_256.png";
 
     protected boolean isCheckedRegEx;
     protected ArrayList<Pair<Integer, Integer>> matchIndexes;
@@ -31,6 +30,8 @@ public class TextEditor extends JFrame {
 
     private JTextArea textArea;
     private JTextField searchTextField;
+    private JCheckBox useRegExCheckbox;
+    private JMenuItem useRegExMenuItem;
     private JFileChooser fileChooser;
 
     public TextEditor() {
@@ -92,7 +93,7 @@ public class TextEditor extends JFrame {
         nextMatchButton.setName("NextMatchButton");
         nextMatchButton.addActionListener(nextMatchAction);
 
-        JCheckBox useRegExCheckbox = new JCheckBox("Use RegEx");
+        useRegExCheckbox = new JCheckBox("Use RegEx");
         useRegExCheckbox.setName("UseRegExCheckbox");
         useRegExCheckbox.addActionListener(regExCheckboxAction);
 
@@ -161,7 +162,7 @@ public class TextEditor extends JFrame {
         nextMatchMenuItem.addActionListener(nextMatchAction);
 
         // Use RegEx
-        JMenuItem useRegExMenuItem = new JMenuItem("Use Regular Expressions");
+        useRegExMenuItem = new JMenuItem("Use Regular Expressions");
         useRegExMenuItem.setName("MenuUseRegExp");
         useRegExMenuItem.addActionListener(regExCheckboxAction);
 
@@ -178,7 +179,11 @@ public class TextEditor extends JFrame {
     ActionListener startSearchAction = actionEvent -> startSearch();
     ActionListener prevMatchAction = actionEvent -> {curIndex--; showMatchText();};
     ActionListener nextMatchAction = actionEvent -> {curIndex++; showMatchText();};
-    ActionListener regExCheckboxAction = actionEvent -> isCheckedRegEx = !isCheckedRegEx;
+    ActionListener regExCheckboxAction = actionEvent -> {
+        isCheckedRegEx = !isCheckedRegEx;
+        useRegExCheckbox.setSelected(isCheckedRegEx);
+        useRegExMenuItem.setSelected(isCheckedRegEx);
+    };
 
     private void startSearch() {
         this.matchIndexes = new ArrayList<>();
@@ -213,6 +218,7 @@ public class TextEditor extends JFrame {
             try {
                 textArea.setText(new String(Files.readAllBytes(selectedFile.toPath())));
             } catch (IOException e) {
+                textArea.setText("");
                 e.printStackTrace();
             }
         }
